@@ -22,3 +22,14 @@ class Course(models.Model):
 
     # Course.objects customizado
     objects = CourseManager()
+
+    def __str__(self):
+        return self.name
+
+    # Customiza o nome da classe para exibição no ADMIN
+    class Meta:
+        verbose_name_plural = 'Cursos'
+        verbose_name = 'Curso'
+        # ordenar pela ordem crescent do nome
+        ordering = ['name']
+        # ordenar decrescente ['-name'] (colocar menos na frente do campo)

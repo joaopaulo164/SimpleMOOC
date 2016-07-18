@@ -13,12 +13,12 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Course',
             fields=[
-                ('id', models.AutoField(serialize=False, verbose_name='ID', primary_key=True, auto_created=True)),
+                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('name', models.CharField(verbose_name='Nome', max_length=100)),
                 ('slug', models.SlugField(verbose_name='Atalho')),
-                ('description', models.TextField(blank=True, verbose_name='Descrição')),
-                ('start_date', models.DateField(blank=True, verbose_name='Data de Início', null=True)),
-                ('image', models.ImageField(upload_to='courses/images', verbose_name='Imagem')),
+                ('description', models.TextField(verbose_name='Descrição', blank=True)),
+                ('start_date', models.DateField(verbose_name='Data de Início', blank=True, null=True)),
+                ('image', models.ImageField(verbose_name='Imagem', upload_to='courses/images', blank=True, null=True)),
                 ('created_at', models.DateTimeField(verbose_name='Criado em', auto_now_add=True)),
                 ('updated_at', models.DateTimeField(verbose_name='Atualizado em', auto_now=True)),
             ],

@@ -14,7 +14,7 @@ Including another URLconf
 """
 from django.conf.urls import include, url, patterns
 
-urlpatterns = patterns('core.views',
+urlpatterns = patterns('SimpleMOOC.core.views',
     url(r'^$', 'home', name='home'),
     url(r'^contato/$', 'contact', name='contact'),
 )

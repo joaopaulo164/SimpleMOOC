@@ -12,16 +12,8 @@ Class-based views
 Including another URLconf
     1. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
 """
-from django.conf.urls import include, url
-from django.contrib import admin
-from django.conf import settings
-from django.conf.urls.static import static
+from django.conf.urls import include, url, patterns
 
-urlpatterns = [
-    url(r'^', include('SimpleMOOC.core.urls', namespace='core')), #caminho para app core
-    url(r'^cursos/', include('SimpleMOOC.courses.urls', namespace='courses')), #camiho para app courses
-    url(r'^admin/', include(admin.site.urls)),
-]
-
-if settings.DEBUG:
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+urlpatterns = patterns('SimpleMOOC.courses.views',
+    url(r'^$', 'index', name='index'), # caminho para view index da app courses
+)

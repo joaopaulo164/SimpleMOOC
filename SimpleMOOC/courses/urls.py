@@ -16,4 +16,5 @@ from django.conf.urls import include, url, patterns
 
 urlpatterns = patterns('SimpleMOOC.courses.views',
     url(r'^$', 'index', name='index'), # caminho para view index da app courses
+    url(r'^(?P<pk>\d+)/$', 'details', name='details'), # caminho para view details da app courses - (?P<pk>\d+) expressão regular = valor decimal (1 ou mais digitos) nomeado como pk
 )

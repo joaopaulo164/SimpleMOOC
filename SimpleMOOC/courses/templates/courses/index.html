@@ -15,7 +15,7 @@
 <div class="pure-g-r content-ribbon">
     <div class="pure-u-1-3">
         <div class="l-box">
-            <a href="{{ course.get_absolute_url }}">
+            <a href="{{ course.get_absolute_url }}"> {% comment %} {{ course.get_absolute_url }} = usa a funcao do jango reversa para pegar a url {% endcomment %}
             {% if course.image %}
             <img src="{{ course.image.url }}" alt="{{ course.name }}" />
             {% else %}
@@ -26,7 +26,7 @@
     </div>
     <div class="pure-u-2-3">
         <div class="l-box">
-            <h4 class="content-subhead"><a href="{{ course.get_absolute_url }}" title="">{{ course.name }}</a></h4>
+            <h4 class="content-subhead"><a href="{% url 'courses:details' course.slug %}" title="">{{ course.name }}</a></h4> {% comment %} {% url 'courses:details' course.slug %} = outra maneira de acessar a url {% endcomment %}
             {{ course.description|linebreaks }}
         </div>
     </div>

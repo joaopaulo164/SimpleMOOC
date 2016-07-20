@@ -27,6 +27,11 @@ class Course(models.Model):
     def __str__(self):
         return self.name
 
+    @models.permalink
+    def get_absolute_url(self):
+        #reverse = resgatar\retornar a url
+        return ('courses:details', (), {'slug': self.slug})
+
     # Customiza o nome da classe para exibição no ADMIN
     class Meta:
         verbose_name_plural = 'Cursos'

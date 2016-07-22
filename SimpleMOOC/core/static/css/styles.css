@@ -162,10 +162,11 @@ td ul.errorlist li {
 }
 
 div.system-message {
-    background: #ffc;
+    /*background: #ffc;*/
     margin: 10px;
     padding: 6px 8px;
     font-size: .8em;
+    color: forestgreen;
 }
 
 div.system-message p.system-message-title {

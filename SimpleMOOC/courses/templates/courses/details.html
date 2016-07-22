@@ -45,10 +45,12 @@
     <div class="pure-u-1">
         <h3>Tire sua dúvida sobre o Curso</h3>
         {% if is_valid %}
-        <p>Você enviou o formulário com sucesso</p>
+            <div class="system-message">
+                <p>Você enviou o formulário com sucesso</p>
+            </div>
         {% endif %}
-        <form action="#contato" class="pure-form pure-form-aligned" method="post">
-            {% csrf_token %} {% comment %} OBRIGATÓRIO para seguraça no Django{% endcomment %}
+        <form action="#contato" class="pure-form pure-form-aligned" method="post"> {% comment %} action é uma açao para ele realizar quando fizer o POST, ou seja, direcionar para o objeto id=contato {% endcomment %}
+            {% csrf_token %} {% comment %} OBRIGATÓRIO para seguraça no Django {% endcomment %}
             <fieldset>
                 {% for field in form %}
                 <div class="pure-control-group">

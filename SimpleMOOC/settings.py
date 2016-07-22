@@ -39,6 +39,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'SimpleMOOC.core',
     'SimpleMOOC.courses',
+    'SimpleMOOC.accounts',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -117,3 +118,12 @@ EMAIL_HOST_PASSWORD = 'senha'
 EMAIL_PORT = 587
 
 CONTACT_EMAIL = 'joaopaulo@164@gmail.com'
+
+
+# Auth
+
+# LOGIN_URL = '/conta/entrar' # redirecionamento manual
+LOGIN_URL = 'accounts:login'
+# LOGIN_REDIRECT_URL = '/' # redirecionamento manual
+LOGIN_REDIRECT_URL = 'core:home'
+LOGOUT_URL = 'accounts:logout'

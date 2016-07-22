@@ -49,7 +49,7 @@
                 <p>Você enviou o formulário com sucesso</p>
             </div>
         {% endif %}
-        <form action="#contato" class="pure-form pure-form-aligned" method="post"> {% comment %} action é uma açao para ele realizar quando fizer o POST, ou seja, direcionar para o objeto id=contato {% endcomment %}
+        <form action="#contato" class="pure-form pure-form-aligned" method="post"> {% comment %} action é uma açao para ele realizar quando fizer o POST, ou seja, direcionar {% endcomment %}
             {% csrf_token %} {% comment %} OBRIGATÓRIO para seguraça no Django {% endcomment %}
             <fieldset>
                 {% for field in form %}

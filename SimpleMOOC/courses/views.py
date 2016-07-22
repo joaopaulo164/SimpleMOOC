@@ -1,5 +1,6 @@
 from django.shortcuts import render, get_object_or_404
 from .models import Course
+from .forms import ContactCourse # importando o form
 
 # Create your views here.
 
@@ -13,7 +14,7 @@ def index(request):
 
 # def details(request, pk):
 #     course = get_object_or_404(Course, pk=pk)
-#     template_name = 'courses/details.html'
+#     template_name = 'courses/details_old.html'
 #     context = {
 #         'course': course
 #     }
@@ -23,7 +24,12 @@ def index(request):
 def details(request, slug):
     course = get_object_or_404(Course, slug=slug)
     template_name = 'courses/details.html'
+    if request.method == 'POST': # verifica se a requisição foi um POST
+        form = ContactCourse(request.POST) # o POST é um dicionário com todos os campos submetidos pelo usuário
+    else:
+        form = ContactCourse()
     context = {
-        'course': course
+        'course': course,
+        'form': form
     }
     return render(request, template_name, context)

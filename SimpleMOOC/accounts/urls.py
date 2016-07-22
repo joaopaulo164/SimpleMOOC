@@ -16,9 +16,13 @@ Including another URLconf
 from django.conf.urls import include, url, patterns
 
 urlpatterns = patterns('',
+    # utilizando uma view direta do Django para login
+    # template_name => modifica para o nosso template a função de login
     url(r'^entrar/$', 'django.contrib.auth.views.login', {'template_name': 'accounts/login.html'}, name='login'),
-        # template_name => modifica para o nosso template a função de login
-        # utilizando uma view direta do Django para login
+
+    # utilizando uma view direta do Django para logout
+    # next_page => vai para a pagina home do modulo core (Pagina principal)
+    url(r'^sair/$', 'django.contrib.auth.views.logout', {'next_page': 'core:home'}, name='logout'),
 
     url(r'^cadastre-se/$', 'SimpleMOOC.accounts.views.register', name='register'),
 

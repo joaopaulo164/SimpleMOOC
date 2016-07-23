@@ -26,3 +26,25 @@ class RegisterForm(UserCreationForm):
         if commit:
             user.save()
         return user
+
+
+class EditAccountForm(forms.ModelForm): # forms.ModelForm => utiliza todos os campos do Modelo para gerar o Form
+
+    # função para verificar se o e-mail já foi cadastrado
+    def clean_email(self):
+
+        # retorna o e-mail passado pelo Form
+        email = self.cleaned_data['email']
+
+        # Verifica se o email já foi cadastrado no banco
+        # exclude() exclui da Queryset o registro com PK igual da instância atual (pk=self.instance.pk)
+        queryset = User.objects.filter(email=email).exclude(pk=self.instance.pk)
+
+        # exists() True ou False
+        if queryset.exists():
+            raise forms.ValidationError('Já existe usuário com este e-mail') # Lançando uma exeção
+        return email
+
+    class Meta: # Obrigatório
+        model = User # Diz para o ModelForm qual o Model (User) utilizar
+        fields = ['username', 'email', 'first_name', 'last_name'] # campos que serão alterados

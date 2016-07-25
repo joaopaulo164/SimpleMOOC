@@ -28,4 +28,5 @@ urlpatterns = patterns('',
 
     url(r'^cadastre-se/$', 'SimpleMOOC.accounts.views.register', name='register'),
     url(r'^editar/$', 'SimpleMOOC.accounts.views.edit', name='edit'),
+    url(r'^editar-senha/$', 'SimpleMOOC.accounts.views.edit_password', name='edit_password'),
 )

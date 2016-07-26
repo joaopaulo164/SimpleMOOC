@@ -2,12 +2,22 @@
 
 from django.shortcuts import render, redirect
 from django.contrib.auth.forms import UserCreationForm, PasswordChangeForm
-from django.contrib.auth import authenticate, login # necessario para autenticar depois de cadastrado o usuário
+
+# (authenticate, login) necessario para autenticar depois de cadastrado o usuário
+from django.contrib.auth import authenticate, login, get_user_model
 from django.contrib.auth.decorators import login_required
 from django.conf import settings
-from .forms import RegisterForm, EditAccountForm
+
+from SimpleMOOC.core.utils import generate_hash_key
+
+from .forms import RegisterForm, EditAccountForm, PasswordResetForm
+from .models import PasswordReset
 
 # Create your views here.
+
+
+User = get_user_model() # Pega o usuário customizado
+
 
 # @login_required => verifica se o usuário está logado, caso contrário redireciona para a página/view de login
 @login_required
@@ -34,6 +44,22 @@ def register(request):
         'form': form
     }
     return render(request, template_name, context)
+
+
+def password_reset(request):
+    template_name = 'accounts/password_reset.html'
+    context = {}
+    # Se request.Post estiver vazio (False) será preenchido com None, ou seja, PasswordResetForm(), pois ele não validará o formulário
+    form = PasswordResetForm(request.POST or None)
+    if form.is_valid():
+        user = User.objects.get(email=form.cleaned_data['email'])
+        key = generate_hash_key(user.name)
+        reset = PasswordReset(key=key, user=user)
+        reset.save()
+        context['success'] = True
+    context['form'] = form
+    return render(request, template_name, context)
+
 
 @login_required
 def edit(request):

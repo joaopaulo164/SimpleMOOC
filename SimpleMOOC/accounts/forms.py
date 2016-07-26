@@ -14,6 +14,20 @@ from django.contrib.auth import get_user_model
 User = get_user_model() # usando o usuário do sistema (user customizado)
 
 
+# No momento não exite a necessidade de usar ModelForm porque só teremos e-mail
+class PasswordResetForm(forms.Form):
+
+    email = forms.EmailField(label='E-mail')
+
+    def clean_email(self):
+        email = self.cleaned_data['email'] # pega data do formulário
+        if User.objects.filter(email=email).exists():
+            return email
+        raise forms.ValidationError('Nenhum usuário foi encontrado com este e-mail!')
+
+
+
+
 # Refatoração no RegisterForm porque ele não é mais compatível com o UserCreationForm (Olhar código comentado no final do arquivo)
 class RegisterForm(forms.ModelForm):
 

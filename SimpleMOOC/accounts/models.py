@@ -1,6 +1,9 @@
 # coding=utf-8
 
+import re # módulo Regex do python
+
 from django.db import models
+from django.core import validators # para criar validações dos campos do modelo
 from django.contrib.auth.models import (AbstractBaseUser, PermissionsMixin, UserManager)
 
 # Create your models here.
@@ -13,7 +16,12 @@ from django.contrib.auth.models import (AbstractBaseUser, PermissionsMixin, User
 
 class User(AbstractBaseUser, PermissionsMixin):
 
-    username = models.CharField('Nome de Usuário', max_length=30, unique=True)
+    # validação do campo por Regex
+    username = models.CharField(
+        'Nome de Usuário', max_length=30, unique=True,
+        validators=[validators.RegexValidator(re.compile('^[\w.@+-]+$'),
+        'O nome de usuário só pode conter letras, digitos ou o seguinte caracteres @/./+/-/_', 'invalid')]
+    )
     email = models.EmailField('E-mail', unique=True)
     name = models.CharField('Nome', max_length=100, blank=True)
     is_active = models.BooleanField('Está ativo?', blank=True, default=True) # Necessário para Admin do Django (usuário padrão)

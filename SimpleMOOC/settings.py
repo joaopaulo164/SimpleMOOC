@@ -127,3 +127,6 @@ LOGIN_URL = 'accounts:login'
 # LOGIN_REDIRECT_URL = '/' # redirecionamento manual
 LOGIN_REDIRECT_URL = 'core:home'
 LOGOUT_URL = 'accounts:logout'
+
+# Definindo o usuário customizado para o sistema no lugar do usuário padrão
+AUTH_USER_MODEL = 'accounts.User'

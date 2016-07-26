@@ -2,3 +2,5 @@
 # http://git-scm.com/docs/gitignore
 
 .idea/
+*.pyc
+__pycache__

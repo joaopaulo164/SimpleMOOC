@@ -1,7 +1,7 @@
 # coding=utf-8
 
-from django.shortcuts import render, redirect
-from django.contrib.auth.forms import UserCreationForm, PasswordChangeForm
+from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib.auth.forms import (UserCreationForm, PasswordChangeForm, SetPasswordForm)
 
 # (authenticate, login) necessario para autenticar depois de cadastrado o usuário
 from django.contrib.auth import authenticate, login, get_user_model
@@ -15,9 +15,7 @@ from .models import PasswordReset
 
 # Create your views here.
 
-
 User = get_user_model() # Pega o usuário customizado
-
 
 # @login_required => verifica se o usuário está logado, caso contrário redireciona para a página/view de login
 @login_required
@@ -52,10 +50,27 @@ def password_reset(request):
     # Se request.Post estiver vazio (False) será preenchido com None, ou seja, PasswordResetForm(), pois ele não validará o formulário
     form = PasswordResetForm(request.POST or None)
     if form.is_valid():
-        user = User.objects.get(email=form.cleaned_data['email'])
-        key = generate_hash_key(user.name)
-        reset = PasswordReset(key=key, user=user)
-        reset.save()
+        #
+        # Removendo a lógica da View para o forms.py, método save() da classe PasswordResetForm
+        #
+        # user = User.objects.get(email=form.cleaned_data['email'])
+        # key = generate_hash_key(user.username)
+        # reset = PasswordReset(key=key, user=user)
+        # reset.save()
+        #
+        form.save()
+        context['success'] = True
+    context['form'] = form
+    return render(request, template_name, context)
+
+
+def password_reset_confirm(request, key):
+    template_name = 'accounts/password_reset_confirm.html'
+    context = {}
+    reset = get_object_or_404(PasswordReset, key=key)
+    form = SetPasswordForm(user=reset.user, data=request.POST or None) # Formulário sem a solicitação de senha antiga.
+    if form.is_valid():
+        form.save()
         context['success'] = True
     context['form'] = form
     return render(request, template_name, context)

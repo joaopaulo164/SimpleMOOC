@@ -28,6 +28,16 @@
     </div>
 </div>
 <div class="content">
+    <div class="pure-g-r content-ribbon">
+        {% comment %} Utiliza o módulo de mensagens do Django para integarir com as ações do usuário {% endcomment %}
+        {% if messages %}
+            <aside class="pure-u-1">
+            {% for message in messages %}
+                <p>{{ message }}</p>
+            {% endfor %}
+        {% endif %}
+        </aside>
+    </div>
     {% block container %}
         {% comment %} Bloco onde entra os outros templates {% endcomment %}
     {% endblock %}

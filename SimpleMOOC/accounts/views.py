@@ -10,6 +10,7 @@ from django.contrib.auth.decorators import login_required
 from django.conf import settings
 
 from SimpleMOOC.core.utils import generate_hash_key
+from SimpleMOOC.courses.models import Enrollment
 
 from .forms import RegisterForm, EditAccountForm, PasswordResetForm
 from .models import PasswordReset
@@ -22,7 +23,13 @@ User = get_user_model() # Pega o usuário customizado
 @login_required
 def dashboard(request):
     template_name = 'accounts/dashboard.html'
-    return render(request, template_name)
+    context = {}
+
+    # Removido para fazer uma Custom TAG (templatetags em courses) my_courses é o nome da TAG
+    # Desta maneira conseguimos deixar disponível a função/tag my_courses disponível para o projeto inteiro
+    # context['enrollments'] = Enrollment.objects.filter(user=request.user) # Passando as inscrições para o contexto da view dashboard
+
+    return render(request, template_name, context)
 
 def register(request):
     template_name = 'accounts/register.html'

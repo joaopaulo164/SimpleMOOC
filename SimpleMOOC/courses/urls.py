@@ -18,12 +18,13 @@ urlpatterns = patterns('SimpleMOOC.courses.views',
     # caminho para view index da app courses
     url(r'^$', 'index', name='index'),
 
-    # caminho para view details da app courses - (?P<pk>\d+) expressão regular = valor decimal (1 ou mais digitos) nomeado como pk
+    # caminho para view details da app courses - (?P<pk>\d+) expressï¿½o regular = valor decimal (1 ou mais digitos) nomeado como pk
     #url(r'^(?P<pk>\d+)/$', 'details', name='details'),
 
-    # caminho para view details da app courses - (?P<slug>[\w_-]+) expressão regular = caracteres que do slug ("alfa-numerico"_-). Ex: pytho-para-zumbis
+    # caminho para view details da app courses - (?P<slug>[\w_-]+) expressï¿½o regular = caracteres que do slug ("alfa-numerico"_-). Ex: pytho-para-zumbis
     url(r'^(?P<slug>[\w_-]+)/$', 'details', name='details'),
 
     # caminho para a view enrollment
     url(r'^(?P<slug>[\w_-]+)/inscricao/$', 'enrollment', name='enrollment'),
+    url(r'^(?P<slug>[\w_-]+)/anuncios/$', 'announcements', name='announcements'),
 )

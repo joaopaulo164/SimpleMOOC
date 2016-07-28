@@ -61,9 +61,15 @@ class Enrollment(models.Model):
     updated_at = models.DateTimeField('Atualizado em', auto_now=True)
 
 
+    # Muda o status para 1 = aprovado
     def active(self):
         self.status = 1
         self.save()
+
+
+    # Retorna status = 1, se estiver aprovado
+    def is_approved(self):
+        return self.status == 1
 
 
     class Meta:

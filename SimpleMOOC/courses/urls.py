@@ -26,5 +26,6 @@ urlpatterns = patterns('SimpleMOOC.courses.views',
 
     # caminho para a view enrollment
     url(r'^(?P<slug>[\w_-]+)/inscricao/$', 'enrollment', name='enrollment'),
+    url(r'^(?P<slug>[\w_-]+)/cancelar-inscricao/$', 'undo_enrollment', name='undo_enrollment'),
     url(r'^(?P<slug>[\w_-]+)/anuncios/$', 'announcements', name='announcements'),
 )

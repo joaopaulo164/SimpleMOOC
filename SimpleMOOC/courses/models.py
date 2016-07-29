@@ -78,3 +78,53 @@ class Enrollment(models.Model):
 
         # unique_together => index de unicidade, ou seja, só pode existir uma inscrição para cada usuário e curso
         unique_together = (('user', 'course'),)
+
+
+
+class Announcement(models.Model):
+
+    course = models.ForeignKey(Course, verbose_name='Curso')
+    title = models.CharField('Título', max_length=100)
+    content = models.TextField('Conteúdo')
+
+    created_at = models.DateTimeField('Criado em', auto_now_add=True)
+    updated_at = models.DateTimeField('Atualizado em', auto_now=True)
+
+    def __str__(self):
+        return self.title
+
+
+    class Meta:
+        verbose_name = 'Anúncio'
+        verbose_name_plural = 'Anúncios'
+        ordering = ['-created_at'] # -created_at => decrescente
+
+
+
+class Comment(models.Model):
+
+    announcement = models.ForeignKey(
+        Announcement,
+        verbose_name='Anúncio',
+        related_name='comments' # uma instância de Announcement terá uma relação comments que trará os seus comentários
+    )
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name='Usúario')
+    comment = models.TextField('Comentário')
+
+    created_at = models.DateTimeField('Criado em', auto_now_add=True)
+    updated_at = models.DateTimeField('Atualizado em', auto_now=True)
+
+
+    class Meta:
+        verbose_name = 'Comentário'
+        verbose_name_plural = 'Comentários'
+        ordering = ['created_at']
+
+
+
+
+
+
+
+
+

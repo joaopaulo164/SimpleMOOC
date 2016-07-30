@@ -28,4 +28,7 @@ urlpatterns = patterns('SimpleMOOC.courses.views',
     url(r'^(?P<slug>[\w_-]+)/inscricao/$', 'enrollment', name='enrollment'),
     url(r'^(?P<slug>[\w_-]+)/cancelar-inscricao/$', 'undo_enrollment', name='undo_enrollment'),
     url(r'^(?P<slug>[\w_-]+)/anuncios/$', 'announcements', name='announcements'),
+
+    # ../anuncios/(?P<pk>\d+)/$ => parametro nomeado do tipo numero (expressão regular)
+    url(r'^(?P<slug>[\w_-]+)/anuncios/(?P<pk>\d+)/$', 'show_announcement', name='show_announcement'),
 )

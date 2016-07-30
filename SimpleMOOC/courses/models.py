@@ -83,7 +83,11 @@ class Enrollment(models.Model):
 
 class Announcement(models.Model):
 
-    course = models.ForeignKey(Course, verbose_name='Curso')
+    course = models.ForeignKey(
+        Course,
+        verbose_name='Curso',
+        related_name='announcements'
+    )
     title = models.CharField('Título', max_length=100)
     content = models.TextField('Conteúdo')
 

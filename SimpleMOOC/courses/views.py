@@ -3,8 +3,8 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages # modulo de exibição de mensagens do Django
-from .models import Course, Enrollment
-from .forms import ContactCourse # importando o form
+from .models import Course, Enrollment, Announcement
+from .forms import ContactCourse, CommentForm # importando o forms
 
 # Create your views here.
 
@@ -82,6 +82,7 @@ def undo_enrollment(request, slug):
 
 @login_required
 def announcements(request, slug):
+
     course = get_object_or_404(Course, slug=slug) # pega o curso ou retor 404
 
     # se o usuário não for administrador
@@ -92,7 +93,37 @@ def announcements(request, slug):
             return redirect('accounts:dashboard')
     template = 'courses/announcements.html'
     context = {
-        'course': course
+        'course': course,
+        'announcements': course.announcements.all()
     }
     return render(request, template, context)
 
+
+@login_required
+def show_announcement(request, slug, pk):
+
+    course = get_object_or_404(Course, slug=slug) # pega o curso ou retor 404
+
+    # se o usuário não for administrador
+    if not request.user.is_staff:
+        enrollment = get_object_or_404(Enrollment, user=request.user, course=course)  # pega a inscrição ou retorna 404
+        if not enrollment.is_approved():
+            messages.error(request, 'A sua inscrição está pendente')
+            return redirect('accounts:dashboard')
+    announcement = get_object_or_404(course.announcements.all(), pk=pk)
+    form = CommentForm(request.POST or None)
+    if form.is_valid():
+        # No formulário só temos o campo coment, logo precisamos incluir o usuáirio e o anúncio atuais
+        comment = form.save(commit=False) # Não salva, mas cria um objeto com os valores do formulário e retona o objeto
+        comment.user = request.user
+        comment.announcement = announcement
+        comment.save()
+        form = CommentForm()
+        messages.success(request, 'Seu comentário foi enviado com sucesso!')
+    template = 'courses/show_announcement.html'
+    context = {
+        'course': course,
+        'announcement': announcement,
+        'form': form
+    }
+    return render(request, template, context)

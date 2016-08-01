@@ -27,17 +27,20 @@
             </thead>
             <tbody>
                 {% for material in lesson.materials.all %}
+                {# tag cycle é responsável por alternar entre os atributos '' (vazio) e 'pure-table-odd' (pitado) na criação das tr's da table #}
                 <tr class="{% cycle '' 'pure-table-odd' %}">
                     <td>
                         {{ material }}
                     </td>
                     <td>
                         {% if material.is_embedded %}
-                        <a href="#">
+                        <a href="{% url 'courses:material' course.slug material.pk %}">
                             <i class="fa fa-video-camera"></i>
                             Acessar
                         </a>
                         {% else %}
+                        {# material.file.url => retorna o caminho do arquivo no servidor #}
+                        {# target="_blank" => abre em uma nova página #}
                         <a target="_blank" href="{{ material.file.url }}">
                             <i class="fa fa-download"></i>
                             Baixar

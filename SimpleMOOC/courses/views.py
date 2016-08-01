@@ -3,7 +3,7 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages # modulo de exibição de mensagens do Django
-from .models import Course, Enrollment, Announcement, Lesson
+from .models import Course, Enrollment, Announcement, Lesson, Material
 from .forms import ContactCourse, CommentForm # importando o forms
 
 # importa o decorator que criamos para verificar a inscrição
@@ -214,5 +214,32 @@ def lesson(request, slug, pk):
     }
     return render(request, template, context)
 
+
+
+@login_required
+@enrollment_required
+def material(request, slug, pk):
+    course = request.course
+
+    # não existe relacionamento entre material e curso, pois a relação é entre lição e material
+    # lesson__course=course => para acessar o curso de uma lição utilizamos '__' (2 underlines)
+    material = get_object_or_404(Material, pk=pk, lesson__course=course)
+    lesson = material.lesson
+
+    # impede que se o usuário não for admin do sistema e a aula não estiver disponível que ele assista
+    if not request.user.is_staff and not lesson.is_available():
+        messages.error(request, 'Este material não está disponível')
+        return redirect('couses:lessons', slug=course.slug, pk=lesson.pk)
+
+    # se não existir o material redireciona
+    if not material.is_embedded():
+        return redirect(material.file.url)
+    template = 'courses/material.html'
+    context = {
+        'course': course,
+        'lesson': lesson,
+        'material': material
+    }
+    return render(request, template, context)
 
 

@@ -10,9 +10,12 @@
 {% block dashboard_content %}
 <form class="pure-form pure-form-stacked" method="post">
     {% csrf_token %}
+{% comment %}
+    {#  removido da view edit o contexto success e utilizado o modulo padrão MESSAGES do Django  #}
     {% if success %}
     <p>Os dados foram alterados com sucesso!!!</p>
     {% endif %}
+{% endcomment %}
     <fieldset>
     {# Erros não associados aos campos #}
         {{ form.non_field_errors }}

@@ -4,3 +4,13 @@
 .idea/
 *.pyc
 __pycache__
+__pycache__/
+**/__pycache__
+**/__pycache__/
+**/__pycache__/*
+SimpleMOOC/__pycache__
+SimpleMOOC/__pycache__/
+SimpleMOOC/__pycache__/*
+SimpleMOOC/*/__pycache__
+SimpleMOOC/*/__pycache__/
+SimpleMOOC/*/__pycache__/*

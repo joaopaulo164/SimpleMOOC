@@ -1,3 +1,5 @@
+# coding=utf-8
+
 """SimpleMOOC URL Configuration
 
 The `urlpatterns` list routes URLs to views. For more information please see:
@@ -15,7 +17,23 @@ Including another URLconf
 from django.conf.urls import include, url, patterns
 
 urlpatterns = patterns('SimpleMOOC.courses.views',
-    url(r'^$', 'index', name='index'), # caminho para view index da app courses
-    #url(r'^(?P<pk>\d+)/$', 'details', name='details'), # caminho para view details da app courses - (?P<pk>\d+) expressão regular = valor decimal (1 ou mais digitos) nomeado como pk
-    url(r'^(?P<slug>[\w_-]+)/$', 'details', name='details'), # caminho para view details da app courses - (?P<slug>[\w_-]+) expressão regular = caracteres que do slug ("alfa-numerico"_-). Ex: pytho-para-zumbis
+    # caminho para view index da app courses
+    url(r'^$', 'index', name='index'),
+
+    # caminho para view details da app courses - (?P<pk>\d+) expressï¿½o regular = valor decimal (1 ou mais digitos) nomeado como pk
+    #url(r'^(?P<pk>\d+)/$', 'details', name='details'),
+
+    # caminho para view details da app courses - (?P<slug>[\w_-]+) expressï¿½o regular = caracteres que do slug ("alfa-numerico"_-). Ex: pytho-para-zumbis
+    url(r'^(?P<slug>[\w_-]+)/$', 'details', name='details'),
+
+    # caminho para a view enrollment
+    url(r'^(?P<slug>[\w_-]+)/inscricao/$', 'enrollment', name='enrollment'),
+    url(r'^(?P<slug>[\w_-]+)/cancelar-inscricao/$', 'undo_enrollment', name='undo_enrollment'),
+    url(r'^(?P<slug>[\w_-]+)/anuncios/$', 'announcements', name='announcements'),
+
+    # ../anuncios/(?P<pk>\d+)/$ => parametro nomeado do tipo numero (expressÃ£o regular)
+    url(r'^(?P<slug>[\w_-]+)/anuncios/(?P<pk>\d+)/$', 'show_announcement', name='show_announcement'),
+    url(r'^(?P<slug>[\w_-]+)/aulas/$', 'lessons', name='lessons'),
+    url(r'^(?P<slug>[\w_-]+)/aula/(?P<pk>\d+)/$', 'lesson', name='lesson'),
+    url(r'^(?P<slug>[\w_-]+)/materiais/(?P<pk>\d+)/$', 'material', name='material'),
 )

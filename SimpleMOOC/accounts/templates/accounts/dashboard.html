@@ -1,6 +1,13 @@
 {% extends "base.html" %}
 
+{# Carregando o arquivo com as TAGS presentes na pasta templatetags #}
+{% load courses_tags %}
+
 {% block container %}
+
+{# load_my_courses agora está aqui porque dentro do bloco menu_options ele não consegue acessar #}
+{% load_my_courses user as enrollments %}
+
 <div class="pure-g-r content-ribbon">
     <div class="pure-u-1">
         <ul class="breadcrumb">
@@ -12,13 +19,54 @@
     </div>
     <div class="pure-u-1-3">
         <div class="pure-menu pure-menu-open">
-            <a class="pure-menu-heading">Meus Cursos</a>
             <ul>
-                <li><a href="#">Curso 1</a></li>
-                <li><a href="#">Curso 2</a></li>
-                <li class="pure-menu-heading">Minha Conta</li>
-                <li><a href="{% url 'accounts:edit' %}">Editar Conta</a></li>
-                <li><a href="{% url 'accounts:edit_password' %}">Editar Senha</a></li>
+                <li class="pure-menu-heading">
+                    Bem-vindo, {{ user }}
+                </li>
+
+                {# A página que herdar o menu_options poderá configura-o #}
+                {% block menu_options %}
+
+                    {# my_user é uma TAG que possui o seu próprio HTML (templatetags/my_courses.html) para ser incluído no meio do código #}
+                    {# my_user é a minha TAG e user (usuário atual) o parâmetro que ela recebe #}
+                    {# se utilizar a TAG my_user descomentar a linha abaixo e comentar o bloco posterior #}
+                    {% comment %}{% my_courses user %}{% endcomment %}
+
+                    {# comentar para utiizar a tag my_course - begin #}
+                    {# load_my_courses foi comentado abaixo, pois agora que está dentro do bloco ele não consegue acessar e foi escrito novamente o inici do arquivo #}
+                    {# {% load_my_courses user as enrollments %} #}
+
+
+                    {# {% load_my_courses user as enrollments %} => esta TAG apenas atualiza o contexto e não possui HTML próprio #}
+                    {# {% load_my_courses user as enrollments %} => esta TAG é mais flexível por não possuir HTML #}
+                    <li class="pure-menu-heading">Cursos</li>
+                    {% for enrollment in enrollments %}
+                        <li>
+                            <a href="{% url 'courses:announcements' enrollment.course.slug %}">
+                                <i class="fa fa-book"></i>
+                                {{ enrollment.course }}
+                            </a>
+                        </li>
+                    {% empty %}
+                        <li>Nenhum curso encontrado</li>
+                    {% endfor %}
+                    {# comentar para utiizar a tag my_course - end #}
+
+                    <li class="pure-menu-heading">Configurações de Conta</li>
+                    <li>
+                        <a href="{% url 'accounts:edit' %}">
+                            <i class="fa fa-cog"></i>
+                            Editar Informações
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{% url 'accounts:edit_password' %}">
+                            <i class="fa fa-lock"></i>
+                            Editar Senha
+                        </a>
+                    </li>
+
+                {% endblock %}
             </ul>
         </div>
     </div>
@@ -26,8 +74,26 @@
         <div class="inner">
             {% block dashboard_content %}
             {% comment %} conteúdo que será alterado por herança {% endcomment %}
-            <p><strong>Usuário</strong>: {{ user }}</p>
-            <p><strong>E-mail</strong>: {{ user.email }}</p>
+
+            <h2>Meus Cursos</h2>
+            {% for enrollment in enrollments %}
+            <div class="well">
+                <h3>{{ enrollment.course }}
+                    {# Documentação dos Filtros por data #}
+                    {# https://docs.djangoproject.com/en/1.9/ref/templates/builtins/#date #}
+                ({{ enrollment.course.start_date|date:'d/m/Y'|default:'Sem data' }})
+                </h3>
+                {{ enrollment.course.description|linebreaks }}
+                <div class="pure-controls">
+                    <a href="{% url 'courses:announcements' enrollment.course.slug %}" class="pure-button pure-button-primary">Acessar</a>
+                    <a href="{% url 'courses:undo_enrollment' enrollment.course.slug %}" class="pure-button button-error">Cancelar</a>
+                </div>
+            </div>
+            {% empty %}
+            <aside class="pure-u-1">
+                <p>Nenhum curso inscrito</p>
+            </aside>
+            {% endfor %}
             {% endblock %}
         </div>
     </div>

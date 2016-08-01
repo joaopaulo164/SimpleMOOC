@@ -3,6 +3,7 @@
 
 .idea/
 *.pyc
+*.cpython-35.pyc
 __pycache__
 __pycache__/
 **/__pycache__

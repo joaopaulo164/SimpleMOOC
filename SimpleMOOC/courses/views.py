@@ -3,7 +3,7 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages # modulo de exibição de mensagens do Django
-from .models import Course, Enrollment, Announcement
+from .models import Course, Enrollment, Announcement, Lesson
 from .forms import ContactCourse, CommentForm # importando o forms
 
 # importa o decorator que criamos para verificar a inscrição
@@ -174,3 +174,45 @@ def show_announcement(request, slug, pk):
 #         'form': form
 #     }
 #     return render(request, template, context)
+
+
+
+@login_required
+@enrollment_required
+def lessons(request, slug):
+    course = request.course
+    template = 'courses/lessons.html'
+    lessons = course.release_lessons()
+
+    # Se o usuário for admin, ele pode assistir todas as aulas do curso
+    if request.user.is_staff:
+        lessons = course.lessons.all()
+    context = {
+        'course': course,
+        'lessons': lessons
+    }
+    return render(request, template, context)
+
+
+
+@login_required
+@enrollment_required
+def lesson(request, slug, pk):
+    course = request.course
+
+    # course=course => para não deixar o usuário manipular a URL (PK) e assistir aula que não sejá do curso
+    lesson = get_object_or_404(Lesson, pk=pk, course=course)
+
+    # impede que se o usuário não for admin do sistema e a aula não estiver disponível que ele assista
+    if not request.user.is_staff and not lesson.is_available():
+        messages.error(request, 'Esta aula não está disponível')
+        return redirect('couses:lessons', slug=course.slug)
+    template = 'courses/lesson.html'
+    context = {
+        'course': course,
+        'lesson': lesson
+    }
+    return render(request, template, context)
+
+
+

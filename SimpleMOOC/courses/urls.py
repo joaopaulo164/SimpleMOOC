@@ -1,3 +1,5 @@
+# coding=utf-8
+
 """SimpleMOOC URL Configuration
 
 The `urlpatterns` list routes URLs to views. For more information please see:
@@ -31,4 +33,6 @@ urlpatterns = patterns('SimpleMOOC.courses.views',
 
     # ../anuncios/(?P<pk>\d+)/$ => parametro nomeado do tipo numero (expressão regular)
     url(r'^(?P<slug>[\w_-]+)/anuncios/(?P<pk>\d+)/$', 'show_announcement', name='show_announcement'),
+    url(r'^(?P<slug>[\w_-]+)/aulas/$', 'lessons', name='lessons'),
+    url(r'^(?P<slug>[\w_-]+)/aula/(?P<pk>\d+)/$', 'lesson', name='lesson'),
 )

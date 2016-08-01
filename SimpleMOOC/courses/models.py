@@ -5,6 +5,13 @@ from django.conf import settings
 
 from SimpleMOOC.core.mail import send_mail_template
 
+from django.utils import timezone
+
+
+#  datetime.now() => pega a hora com a zona do computador local
+# from datetime import datetime
+# datetime.now()
+
 # Create your models here.
 
 # Customizando Course.objects
@@ -27,13 +34,24 @@ class Course(models.Model):
     # Course.objects customizado
     objects = CourseManager()
 
+
     def __str__(self):
         return self.name
+
 
     @models.permalink
     def get_absolute_url(self):
         #reverse = resgatar\retornar a url
         return ('courses:details', (), {'slug': self.slug})
+
+
+    def release_lessons(self):
+        # timezone.now() => pega a hora com a zona configurada no settings (neste caso UTC)
+        today = timezone.now().today()
+        print(today)
+        # lookup __gte => maior ou igual
+        return self.lessons.filter(release_date__gte=today)
+
 
     # Customiza o nome da classe para exibição no ADMIN
     class Meta:
@@ -55,8 +73,23 @@ class Lesson(models.Model):
     created_at = models.DateTimeField('Criado em', auto_now_add=True)
     updated_at = models.DateTimeField('Atualizado em', auto_now=True)
 
+
     def __str__(self):
         return self.name
+
+
+    def is_available(self):
+        if self.release_date:
+
+            #  datetime.now() => pega a hora com a zona do computador local
+            # from datetime import datetime
+            # datetime.now()
+
+            # timezone.now() => pega a hora com a zona configurada no settings (neste caso UTC)
+            today = timezone.now().date()
+            return self.release_date >= today
+        return False
+
 
     class Meta:
         verbose_name = 'Aula'

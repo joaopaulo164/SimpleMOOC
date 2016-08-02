@@ -1,5 +1,7 @@
 # coding=utf-8
 
+# Os arquivos de teste filhos devem ser importados no arquivo __init__.py da pasta tests para serem carregados
+
 # Documentação de ferramentas para testes disponibilizada pelo Django (Asserts):
 # https://docs.djangoproject.com/pt-br/1.9/topics/testing/tools/
 
@@ -9,10 +11,11 @@ from django.test.client import Client # cliente (broswer para teste do Django)
 from django.core.urlresolvers import reverse
 from django.conf import settings
 
-from .models import Course
+from SimpleMOOC.courses.models import Course
 
 # Run you tests:
 # (env) computar@user: SimpleMOOC $ python manage.py test
+
 
 # Create your tests here.
 

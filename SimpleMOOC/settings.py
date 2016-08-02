@@ -117,7 +117,7 @@ DEFAULT_FROM_EMAIL = 'Nome <email@gmail.com>'
 # EMAIL_HOST_PASSWORD = 'senha'
 # EMAIL_PORT = 587
 
-CONTACT_EMAIL = 'joaopaulo@164@gmail.com'
+CONTACT_EMAIL = 'joaopaulo164@gmail.com'
 
 
 # Auth
